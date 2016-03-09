@@ -4,43 +4,77 @@ var expect = require('chai').expect;
 
 describe('Chart', function() {
 
-  var React;
-  var Chart;
-  // var generate;
-  var TestUtils;
+  var React,
+      ReactTestUtils,
+      Chart;
 
   before(() => {
-    React = require('react/addons');
+    React = require('react');
+    ReactTestUtils = require('react-addons-test-utils');
     Chart = require('../src/common/charts/Chart');
-    // generate = require('./utils/datagen').generateArrayOfPoints;
-    TestUtils = React.addons.TestUtils;
   });
 
-  it('renders and tests basic chart component', function() {
-    var BasicChart = require('../src/common/charts/BasicChart');
+  it('can be rendered', function() {
+    var chart = React.createElement(Chart, null);
+    var isChart = ReactTestUtils.isElementOfType(chart, Chart);
+    var renderedChart = ReactTestUtils.renderIntoDocument(chart);
 
-    var chart = TestUtils.renderIntoDocument(
-      <Chart
-        legend={false}
-      />
-    );
-
-    var basicChart = TestUtils.scryRenderedComponentsWithType(
-      chart, BasicChart);
-    expect(basicChart).to.have.length(1);
+    expect(chart).to.exist;
+    expect(isChart).to.be.true;
+    expect(renderedChart).to.exist;
   });
 
-  it('renders and tests legend chart component', function() {
-    var LegendChart = require('../src/common/charts/LegendChart');
+  describe('BasicChart', function() {
+    var BasicChart;
 
-    var legendChart = TestUtils.renderIntoDocument(
-      <Chart
-        legend={true}
-      />
-    );
+    before(() => {
+      BasicChart = require('../src/common/charts/BasicChart');
+    });
 
-    var legendChart = TestUtils.scryRenderedComponentsWithType(
-      chart, LegendChart);
-    expect(legendChart).to.have.length(1);
+    it('renders without a legend', function() {
+      var renderedChart = ReactTestUtils.renderIntoDocument(
+        <Chart
+          legend={false}
+        />
+      );
+
+      var basicChart = ReactTestUtils.findRenderedComponentWithType(
+        renderedChart, BasicChart
+      );
+
+      var isBasicChart= ReactTestUtils.isCompositeComponentWithType(
+        basicChart, BasicChart
+      );
+
+      expect(basicChart).to.exist;
+      expect(isBasicChart).to.be.true;
+    });
+  });
+
+  describe('LegendChart', function() {
+    var LegendChart;
+
+    before(() => {
+      LegendChart = require('../src/common/charts/LegendChart');
+    });
+
+    it('renders with a legend', function() {
+      var renderedChart = ReactTestUtils.renderIntoDocument(
+        <Chart
+          legend={true}
+        />
+      );
+
+      var legendChart = ReactTestUtils.findRenderedComponentWithType(
+        renderedChart, LegendChart
+      );
+
+      var isLegendChart= ReactTestUtils.isCompositeComponentWithType(
+        legendChart, BasicChart
+      );
+
+      expect(legendChart).to.exist;
+      expect(isLegendChart).to.be.true;
+    });
   });
 });
