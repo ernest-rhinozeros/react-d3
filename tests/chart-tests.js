@@ -70,7 +70,7 @@ describe('Chart', function() {
       );
 
       var isLegendChart= ReactTestUtils.isCompositeComponentWithType(
-        legendChart, BasicChart
+        legendChart, LegendChart
       );
 
       expect(legendChart).to.exist;
