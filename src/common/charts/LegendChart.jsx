@@ -32,7 +32,7 @@ module.exports = React.createClass({
       colors:         d3.scale.category20c(),
       colorAccessor:  (d, idx) => idx,
       data:           [],
-      legend:         false,
+      legend:         true,
       legendPosition: 'right',
       margins:        {top: 0},
       sideOffset:     90,
