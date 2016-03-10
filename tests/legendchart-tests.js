@@ -3,28 +3,80 @@
 var expect = require('chai').expect;
 
 describe('LegendChart', function() {
-  it('renders and tests LegendChart component', function() {
-    var React = require('react/addons');
-    var LegendChart = require('../src/common/charts/LegendChart');
-    var generate = require('./utils/datagen').generateArrayOfPoints;
-    var TestUtils = React.addons.TestUtils;
 
-    var legend = TestUtils.renderIntoDocument(
-      <LegendChart /> 
+  var React,
+      ReactTestUtils,
+      LegendChart,
+      Legend,
+      generate;
+
+  before(() => {
+    React = require('react');
+    ReactTestUtils = require('react-addons-test-utils');
+    LegendChart = require('../src/common/charts/LegendChart');
+    Legend = require('../src/common/Legend');
+    generate = require('./utils/datagen').generateArrayOfPoints;
+  });
+
+  var legendChartRendersCorrect = function(dom) {
+    var legendChart = ReactTestUtils.findRenderedComponentWithType(
+      dom, LegendChart);
+
+    var isLegendChart = ReactTestUtils.isCompositeComponentWithType(
+      legendChart, LegendChart);
+
+    expect(legendChart).to.exist;
+    expect(isLegendChart).to.be.true;
+  };
+
+  it('can be rendered and contains a legend by default', function() {
+    var dom = ReactTestUtils.renderIntoDocument(
+      <LegendChart />
     );
 
-    var legendWithTitle = TestUtils.renderIntoDocument(
-      <LegendChart title="foo" /> 
+    legendChartRendersCorrect(dom);
+
+    var legend = ReactTestUtils.findRenderedComponentWithType(
+      dom, Legend);
+
+    var isLegend = ReactTestUtils.isCompositeComponentWithType(
+      legend, Legend);
+
+    expect(legend).to.exist;
+    expect(isLegend).to.be.true;
+  });
+
+  it('contains a legend if specified', function() {
+    var dom = ReactTestUtils.renderIntoDocument(
+      <LegendChart
+        legend={true}
+      />
     );
 
-    // Verify there is no heading element
-    var noTitleHeadings = TestUtils.scryRenderedDOMComponentsWithTag(
-      legend, 'h4');
-    expect(noTitleHeadings).to.have.length(0);
+    legendChartRendersCorrect(dom);
 
-    // Verify there is a heading element
-    var titleHeadings = TestUtils.scryRenderedDOMComponentsWithTag(
-      legendWithTitle, 'h4');
-    expect(titleHeadings).to.have.length(1);
+    var legend = ReactTestUtils.findRenderedComponentWithType(
+      dom, Legend);
+
+    var isLegend = ReactTestUtils.isCompositeComponentWithType(
+      legend, Legend);
+
+    expect(legend).to.exist;
+    expect(isLegend).to.be.true;
+  });
+
+  it('does not contain legend if not specified', function() {
+    var dom = ReactTestUtils.renderIntoDocument(
+      <LegendChart
+        legend={false}
+      />
+    );
+
+    legendChartRendersCorrect(dom);
+
+    var legend = ReactTestUtils.scryRenderedComponentsWithType(
+      dom, Legend);
+
+    expect(legend).to.have.length(0);
   });
 });

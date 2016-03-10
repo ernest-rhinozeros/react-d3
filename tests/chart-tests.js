@@ -42,7 +42,7 @@ describe('Chart', function() {
         renderedChart, BasicChart
       );
 
-      var isBasicChart= ReactTestUtils.isCompositeComponentWithType(
+      var isBasicChart = ReactTestUtils.isCompositeComponentWithType(
         basicChart, BasicChart
       );
 
@@ -69,7 +69,7 @@ describe('Chart', function() {
         renderedChart, LegendChart
       );
 
-      var isLegendChart= ReactTestUtils.isCompositeComponentWithType(
+      var isLegendChart = ReactTestUtils.isCompositeComponentWithType(
         legendChart, LegendChart
       );
 
