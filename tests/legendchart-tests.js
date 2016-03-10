@@ -29,6 +29,8 @@ describe('LegendChart', function() {
     expect(isLegendChart).to.be.true;
   };
 
+  var titleClassName = 'rd3-chart-title';
+
   it('can be rendered and contains a legend by default', function() {
     var dom = ReactTestUtils.renderIntoDocument(
       <LegendChart />
@@ -78,5 +80,32 @@ describe('LegendChart', function() {
       dom, Legend);
 
     expect(legend).to.have.length(0);
+  });
+
+  it('has headings if specified', function() {
+    var chart = ReactTestUtils.renderIntoDocument(
+      <LegendChart title={'foo'} />
+    );
+
+    var heading = ReactTestUtils.findRenderedDOMComponentWithClass(
+      chart, titleClassName);
+
+    expect(heading).to.exist;
+  })
+
+  it('has no headings if not specified', function() {
+    var chart = ReactTestUtils.renderIntoDocument(
+      <LegendChart />
+    );
+
+    var getHeading = function() {
+      return ReactTestUtils.findRenderedDOMComponentWithClass(
+        chart, titleClassName);
+    };
+
+    var expectedErrorMessage = 'Did not find exactly one match (found: 0) for class:' + titleClassName;
+
+    expect(getHeading).to.throw(Error);
+    expect(getHeading).to.throw(expectedErrorMessage);
   });
 });

@@ -3,29 +3,43 @@
 var expect = require('chai').expect;
 
 describe('BasicChart', function() {
-  it('renders and tests BasicChart component', function() {
-    var React = require('react/addons');
-    var BasicChart = require('../src/common/charts/BasicChart');
-    var generate = require('./utils/datagen').generateArrayOfPoints;
-    var TestUtils = React.addons.TestUtils;
 
-    var chart = TestUtils.renderIntoDocument(
-      <BasicChart /> 
+  var React,
+      ReactTestUtils,
+      BasicChart;
+
+  before(() => {
+    React = require('react');
+    ReactTestUtils = require('react-addons-test-utils');
+    BasicChart = require('../src/common/charts/BasicChart');
+  });
+
+  var titleClassName = 'rd3-chart-title';
+
+  it('has headings if specified', function() {
+    var chart = ReactTestUtils.renderIntoDocument(
+      <BasicChart title={'foo'} />
     );
 
-    var chartWithTitle = TestUtils.renderIntoDocument(
-      <BasicChart title="foo" /> 
+    var heading = ReactTestUtils.findRenderedDOMComponentWithClass(
+      chart, titleClassName);
+
+    expect(heading).to.exist;
+  })
+
+  it('has no headings if not specified', function() {
+    var chart = ReactTestUtils.renderIntoDocument(
+      <BasicChart />
     );
 
-    // Verify there is no heading element
-    var noTitleHeadings = TestUtils.scryRenderedDOMComponentsWithTag(
-      chart, 'h4');
-    expect(noTitleHeadings).to.have.length(0);
+    var getHeading = function() {
+      return ReactTestUtils.findRenderedDOMComponentWithClass(
+        chart, titleClassName);
+    };
 
-    // Verify there is a heading element
-    var titleHeadings = TestUtils.scryRenderedDOMComponentsWithTag(
-      chartWithTitle, 'h4');
-    expect(titleHeadings).to.have.length(1);
+    var expectedErrorMessage = 'Did not find exactly one match (found: 0) for class:' + titleClassName;
+
+    expect(getHeading).to.throw(Error);
+    expect(getHeading).to.throw(expectedErrorMessage);
   });
 });
-
